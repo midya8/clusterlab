@@ -36,6 +36,7 @@
  }
  function update(){try{
   const arm=$('arm').value,a=D.arms[arm],l=Number($('left').value),r=Number($('right').value),w=pair(a,l,r);verify(w);
+  const key=Math.min(l,r)+'-'+Math.max(l,r),ambiguity=ClusterAmbiguity.oriented(CLUSTER_AMBIGUITY.arms[arm][key],l>r);ClusterAmbiguity.verify(w,ambiguity);renderAmbiguity(w,ambiguity);
   const lr=a.runs[l],rr=a.runs[r],left=ClusterInference.infer(pixels,model(a,l)),right=ClusterInference.infer(pixels,model(a,r));
   $('selection').textContent=`Original fit-inertia winner: seed ${100+a.chosen}, unchanged. Viewing seeds ${lr.seed} / ${rr.seed}, fitting inertias ${lr.inertia.toFixed(4)} / ${rr.inertia.toFixed(4)}. Cluster IDs have no fixed meaning across runs.`;
   $('ari').textContent=w.ari.toFixed(6);$('movement').textContent=w.mean_squared_displacement.toFixed(6);$('certificate').textContent='EXACT CHECK PASSED';
@@ -44,11 +45,23 @@
   const gap=result=>{const x=result.squared_distances.slice().sort((a,b)=>a-b);return 'Nearest distance '+x[0].toFixed(6)+' / runner-up gap '+(x[1]-x[0]).toFixed(6);};
   $('left-result').textContent=`Left seed ${lr.seed}: C${left.cluster}`;$('right-result').textContent=`Right seed ${rr.seed}: C${right.cluster}`;$('left-gap').textContent=gap(left);$('right-gap').textContent=gap(right);
   $('aligned-result').textContent=`Left C${left.cluster} is matched to right C${w.assignment[left.cluster]}. The right model actually assigns this input to C${right.cluster}. ${w.assignment[left.cluster]===right.cluster?'These agree for this input.':'These disagree for this input.'}`;
-  matrix(a,l,r);$('witness').textContent=JSON.stringify({schema:1,arm,models_sha256:D.models_sha256,left_seed:lr.seed,right_seed:rr.seed,chosen_seed:100+a.chosen,source_row:custom?null:Number($('row').value),pixels,left_inference:left,right_inference:right,matching:w,cost_semantics:D.cost_semantics},null,2);$('error').hidden=true;
+  matrix(a,l,r);$('witness').textContent=JSON.stringify({schema:1,arm,models_sha256:D.models_sha256,left_seed:lr.seed,right_seed:rr.seed,chosen_seed:100+a.chosen,source_row:custom?null:Number($('row').value),pixels,left_inference:left,right_inference:right,matching:w,ambiguity,cost_semantics:D.cost_semantics},null,2);$('error').hidden=true;
  }catch(e){$('error').hidden=false;$('error').textContent=e.message;$('certificate').textContent='CHECK FAILED';}}
+ function renderAmbiguity(w,a){
+  const scale=Number(w.scale),gap=Number(a.gap_units)/scale,rho=a.strict_sufficient_cost_radius;
+  $('uniqueness').textContent=a.unique?'Exactly one optimal permutation.':a.optimal_count+' equally optimal permutations.';
+  const b=a.exclusions[a.best_distinct];$('replacement-gap').textContent='Best distinct permutation adds '+gap.toPrecision(7)+' total squared-distance units. Replacement: ['+b.assignment.join(', ')+'].';
+  $('safe-radius').textContent='The current unique optimum is protected when EVERY entry changes by less than '+(Number(rho.numerator)/Number(rho.denominator)/scale).toPrecision(7)+' in absolute value.';
+  if(!a.unique)$('safe-radius').textContent='Zero gap: no positive strict uniqueness bound. A deterministic solver choice is not evidence of a unique correspondence.';
+  $('exclusions').innerHTML='<caption>Forbid one selected edge; exact constrained optimum in every row</caption><thead><tr><th scope="col">Forbidden edge</th><th scope="col">Replacement cost</th><th scope="col">Increase</th><th scope="col">Permutation</th></tr></thead><tbody>'+a.exclusions.map(e=>'<tr><td>C'+e.forbidden_row+' → C'+e.forbidden_column+'</td><td>'+(Number(e.total_units)/scale).toPrecision(7)+'</td><td>'+(Number(BigInt(e.total_units)-BigInt(w.total_units))/scale).toPrecision(7)+'</td><td>['+e.assignment.join(', ')+']</td></tr>').join('')+'</tbody>';
+  renderFixture();
+ }
+ function renderFixture(){const f=CLUSTER_AMBIGUITY.fixtures[$('fixture').value];ClusterAmbiguity.verify(f,f.audit);const a=f.audit,b=a.exclusions[a.best_distinct];$('fixture-summary').textContent='Exact optima: '+a.optimal_count+'. Selected ['+f.assignment.join(', ')+']; best distinct ['+b.assignment.join(', ')+']. Gap '+a.gap_units+'. '+($('fixture').value==='zero_reduced_but_unique'?'C0→C1 has zero reduced cost, but cannot be completed to another all-tight perfect matching.':'Optimal does not automatically mean unique.');$('fixture-matrix').textContent=JSON.stringify({costs:f.cost_units,selected:f.assignment,dual_rows:f.row_dual,dual_columns:f.column_dual,optimal_count:a.optimal_count,best_distinct:b.assignment,gap:a.gap_units},null,2);}
+ $('fixture').addEventListener('change',renderFixture);
  function reset(){pixels=D.examples[Number($('row').value)].pixels.slice();custom=false;update();}
  function armChange(){const a=D.arms[$('arm').value];$('left').value=String(a.chosen);$('right').value=String((a.chosen+1)%10);update();}
  for(const id of ['left','right','pixel'])$(id).addEventListener('change',update);$('arm').addEventListener('change',armChange);$('row').addEventListener('change',reset);$('reset').addEventListener('click',reset);$('blank').addEventListener('click',()=>{pixels=Array(64).fill(0);custom=true;update();});$('value').addEventListener('input',()=>{pixels[Number($('pixel').value)]=Number($('value').value)/16;custom=true;update();});
+ $('least-gap').addEventListener('click',()=>{const name=$('arm').value,a=D.arms[name],ps=CLUSTER_AMBIGUITY.arms[name];let best=null;for(const [key,w] of Object.entries(a.pairs)){if(w.left===w.right)continue;if(best===null||BigInt(ps[key].gap_units)*BigInt(a.pairs[best].scale)<BigInt(ps[best].gap_units)*BigInt(w.scale))best=key;}$('left').value=String(a.pairs[best].left);$('right').value=String(a.pairs[best].right);update();});
  $('least').addEventListener('click',()=>{const a=D.arms[$('arm').value],w=Object.values(a.pairs).filter(w=>w.left!==w.right).reduce((x,y)=>x.ari<=y.ari?x:y);$('left').value=String(w.left);$('right').value=String(w.right);update();});
  $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('witness').textContent);$('copy-status').textContent='Copied exact JSON.';}catch{$('copy-status').textContent='Copy unavailable. Download JSON instead.';}});
  $('download').addEventListener('click',()=>{const u=URL.createObjectURL(new Blob([$('witness').textContent],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='clusterlab-stability.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);});pixels=D.examples[0].pixels.slice();armChange();
