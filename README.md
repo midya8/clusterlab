@@ -18,7 +18,18 @@ bash examples/demo.sh
 
 Try the [live clustering inspector](https://midya8.github.io/clusterlab/), or open `docs/index.html` locally. It recomputes all ten distances for editable 8x8 digits, with keyboard controls, four fixed model arms, a centroid atlas, test-label composition, every restart's descent curve and copy/download JSON witnesses. No server, uploads, analytics or remote model calls. Twenty original test rows are included by index, not selected for success.
 
-## New in v0.2: inspect every restart
+## New in v0.3: optimal does not mean unique
+
+Every original centroid-matching witness now has ten exact selected-edge exclusion certificates. Their minimum is the cheapest **different permutation**, which may tie the optimum. An exact tight-graph DP counts optimal permutations; an independent full-cost DP checks all 220 counts and best-distinct gaps. All 2,200 exclusion witnesses have attaining permutations and exact dual bounds for rigorously penalized matrices. The browser validates 4,000 oriented exclusions across its 400 pair views.
+
+All real saved matrices happen to have unique optima. The browser includes a two-optimum control and a misleading unused-tight-edge control, exact replacement witnesses, a smallest-gap picker, and a strict **sufficient** entrywise-cost perturbation bound. This is not statistical uncertainty, a sharp radius, input-pixel robustness, or global clustering optimality. Original models, matching matrices, selected seeds and held-out scores are unchanged. [AMBIGUITY.md](AMBIGUITY.md) gives the penalty/exclusion-cover proof and numerical boundary.
+
+```bash
+python -m clusterlab ambiguity --out /tmp/matching-ambiguity.json
+python examples/export_ambiguity.py
+```
+
+## All forty restarts
 
 The [live restart inspector](https://midya8.github.io/clusterlab/stability.html) runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
 
@@ -31,7 +42,7 @@ python -m clusterlab stability --out /tmp/restart-witnesses.json
 python examples/export_stability.py
 ```
 
-38 Python tests and 10 Node/real-Chrome tests cover the combined project. The restart inspector checks all 800 model/example pairs against native references, all 400 directed pair controls, 1,280 displayed centroid pixels, arbitrary edited inputs and copy/download at mobile and desktop widths. [STABILITY.md](STABILITY.md) gives the algorithm, precision boundary, measured ranges and sources.
+48 Python tests and 13 Node/real-Chrome tests cover the combined project. The restart inspector checks all 800 model/example pairs against native references, all 400 directed pair controls, 1,280 displayed centroid pixels, arbitrary edited inputs and copy/download at mobile and desktop widths. [STABILITY.md](STABILITY.md) gives the algorithm, precision boundary, measured ranges and sources.
 
 ## What's built
 
@@ -69,7 +80,7 @@ python -m clusterlab predict examples/predict.json
 
 `train` writes the fixed protocol before loading training features and never loads test rows. `evaluate` first checks the frozen protocol/model hashes in the saved evaluation plan, then opens the original test file. Changing these artifacts invalidates the plan. The hash guard detects mutation, not deliberate test-driven tuning by a person. There is no validation search: all dimensions, k, starts and geometries are fixed in advance.
 
-The installed wheel includes data, artifacts and all nine modules. Its package CI runs all five CLIs outside the checkout, including a complete refit/evaluation. Rooted source examples export `docs/data.js` and the deterministic SVG; those publishing helpers are not installed console commands.
+The installed wheel includes data, artifacts and all ten modules. Its package CI runs all six CLIs outside the checkout, including a complete refit/evaluation. Rooted source examples export `docs/data.js` and the deterministic SVG; those publishing helpers are not installed console commands.
 
 ## Descent is not global optimality
 
