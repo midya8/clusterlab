@@ -6,13 +6,14 @@ out=$(mktemp -d)
 trap 'rm -rf "$out"' EXIT
 cd "$out"
 python - <<'PY'
-import clusterlab,clusterlab.__main__,clusterlab.io,clusterlab.kmeans,clusterlab.preprocess,clusterlab.metrics,clusterlab.data,clusterlab.experiment
-print('eight installed modules imported')
+import clusterlab,clusterlab.__main__,clusterlab.io,clusterlab.kmeans,clusterlab.preprocess,clusterlab.metrics,clusterlab.data,clusterlab.experiment,clusterlab.stability
+print('nine installed modules imported')
 PY
 python -m clusterlab demo
 python -m clusterlab predict "$source_root/examples/predict.json" >predict.json
 python -m clusterlab train --out refit
 python -m clusterlab evaluate --out refit
+python -m clusterlab stability --out stability.json
 python - "$source_root" <<'PY'
 import json,sys,numpy as np
 from pathlib import Path
@@ -25,6 +26,7 @@ for arm in a['arms']:
  np.testing.assert_allclose(x['squared_distances'],y['squared_distances'],rtol=1e-8,atol=1e-10)
  np.testing.assert_allclose(x['silhouettes'],y['silhouettes'],rtol=1e-8,atol=1e-10)
  for k in ['ari','nmi','silhouette']:assert abs(x[k]-y[k])<1e-10
+assert json.load(open('stability.json'))==json.load(open(source/'stability.json'))
 p=json.load(open('predict.json'));assert len(p)==4
-print('all four installed CLIs, full refit and held-out evaluation pass')
+print('all five installed CLIs, full refit and held-out evaluation pass')
 PY
