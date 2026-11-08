@@ -40,7 +40,7 @@ JSON stores integer matrices, scale, duals and objective as decimal **strings**.
 
 The 220 exact objectives agree with a subset dynamic program over column masks, independent of augmenting paths and dual updates. Tiny signed/80-bit random integer matrices are additionally checked by all permutations. Tests cover ties, singletons, subnormal cost ratios, overflow, malformed input, invalid bijections, altered duals/totals and label permutations. All 220 Python certificates reproduce byte-for-byte without access to a dataset loader. The original saved fits and evaluation plans are preserved.
 
-Scalar JavaScript inference is compared with native NumPy distances for all 40x20 = 800 public model/example pairs. Browser checks exercise all 4x10x10 = 400 directed pair views, verify the exact witness, inspect all 1,280 displayed pixels in a two-atlas view, edit custom inputs, copy denied/successful and download JSON, and expand the matrix/witness at 320/390/1280 widths. The matrix has a scrollable accessible values table. The installed v0.2 wheel imports nine modules and runs all five CLIs outside the checkout, including full original refit/holdout evaluation and stability JSON reproduction. Combined suite: 38 Python and 10 Node/real-Chrome tests.
+Scalar JavaScript inference is compared with native NumPy distances for all 40x20 = 800 public model/example pairs. Browser checks exercise all 4x10x10 = 400 directed pair views, verify the exact witness, inspect all 1,280 displayed pixels in a two-atlas view, edit custom inputs, copy denied/successful and download JSON, and expand the matrix/witness at 320/390/1280 widths. The matrix has a scrollable accessible values table. The installed v0.3 wheel imports ten modules and runs all six CLIs outside the checkout, including full original refit/holdout evaluation and stability JSON reproduction. Combined suite: 48 Python and 13 Node/real-Chrome tests.
 
 Reproduce:
 
@@ -61,3 +61,8 @@ python examples/export_stability.py
 - Alpaydin & Kaynak (1998), [UCI Optical Recognition of Handwritten Digits](https://archive.ics.uci.edu/dataset/80/optical+recognition+of+handwritten+digits), DOI 10.24432/C50P49, CC BY 4.0: original unchanged data and split. Derived restart summaries and center images are new transformations, not new source data.
 
 No cited author or data provider endorses this project. No new clustering algorithm, statistical uncertainty guarantee or production recognition capability is claimed.
+
+
+## v0.3 matching ambiguity
+
+[AMBIGUITY.md](AMBIGUITY.md) adds exact best-distinct assignment costs, all ten edge-exclusion witnesses per original matrix, optimal-permutation counts and strict sufficient entrywise-cost bounds. All original models, test scores and v0.2 matching artifacts remain unchanged. Counts and gaps use independent full-cost DP references; no statistical-uncertainty or sharp-radius claim. Current combined suite: 48 Python, 13 Node/Chrome; installed package: ten modules and six CLIs.
