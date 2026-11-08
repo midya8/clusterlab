@@ -40,7 +40,7 @@ The saved report includes all assignments, squared distances, silhouettes,10x10 
 
 Before test load, evaluation checks SHA256 of `protocol.json` and `models.json` against `evaluation-plan.json`. A mismatch fails before the loader. This detects accidental changes, not intentional leakage if a person rewrites the plan after seeing test results. The full-refit test forbids test access entirely and compares all 40 initializations, chosen runs, assignments and learned centers; the separate full-evaluation test reproduces every held-out distance/silhouette and composition matrix.
 
-All 38 Python tests cover an independent scalar objective, exact six-point31partition oracle, D² cumulative sampling oracle, low-index ties, duplicate-value limits, empty repairs, monotonicity, budget reporting, PCA covariance/eigenspectrum/reconstruction, whitening geometry, strict JSON and frozen guards. Ten Node/Chrome tests cover all80native cases and all 640 atlas pixel values, custom pixel edits, keyboard, labels not affecting inference, copy failure/success, download and expanded 320/390/1280 layout/touch controls. Package CI imports all 9 modules and exercises all 5 CLIs outside the checkout, including all 40 refits and full holdout.
+All 48 Python tests cover an independent scalar objective, exact six-point31partition oracle, D² cumulative sampling oracle, low-index ties, duplicate-value limits, empty repairs, monotonicity, budget reporting, PCA covariance/eigenspectrum/reconstruction, whitening geometry, strict JSON and frozen guards. Thirteen Node/Chrome tests cover all80native cases and all 640 atlas pixel values, custom pixel edits, keyboard, labels not affecting inference, copy failure/success, download and expanded 320/390/1280 layout/touch controls. Package CI imports all 10 modules and exercises all 6 CLIs outside the checkout, including all 40 refits and full holdout.
 
 The SVG is deterministic, checking all 640 centroid shades and16 shown score cells plus the entire report in compressed metadata. Gzip timestamp is 0 and descriptive OS header 255 is normalized for cross-Python portability; payload/CRC are unchanged. Metadata mutation and learned-center mutation tests prevent a plausible but stale figure. Browser inference uses separate scalar projection and distance code; no training labels, class assignment heuristic or held-out composition enters it.
 
@@ -66,4 +66,9 @@ All six inspected November 8, 2026. Established methods, original implementation
 
 ## v0.2 restart stability
 
-The existing 40 fits and all held-out numbers above are unchanged. [STABILITY.md](STABILITY.md) documents the new label-free same-data partition agreement and exact rounded-cost center matching audit. The separate browser page exposes every saved restart. Combined tests: 38 Python, 10 Node/Chrome; installed wheel: nine modules, five CLIs.
+The existing 40 fits and all held-out numbers above are unchanged. [STABILITY.md](STABILITY.md) documents the new label-free same-data partition agreement and exact rounded-cost center matching audit. The separate browser page exposes every saved restart. Combined tests: 48 Python, 13 Node/Chrome; installed wheel: ten modules, six CLIs.
+
+
+## v0.3 matching ambiguity
+
+[AMBIGUITY.md](AMBIGUITY.md) adds exact best-distinct assignment costs, all ten edge-exclusion witnesses per original matrix, optimal-permutation counts and strict sufficient entrywise-cost bounds. All original models, test scores and v0.2 matching artifacts remain unchanged. Counts and gaps use independent full-cost DP references; no statistical-uncertainty or sharp-radius claim. Current combined suite: 48 Python, 13 Node/Chrome; installed package: ten modules and six CLIs.
