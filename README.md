@@ -18,6 +18,21 @@ bash examples/demo.sh
 
 Try the [live clustering inspector](https://midya8.github.io/clusterlab/), or open `docs/index.html` locally. It recomputes all ten distances for editable 8x8 digits, with keyboard controls, four fixed model arms, a centroid atlas, test-label composition, every restart's descent curve and copy/download JSON witnesses. No server, uploads, analytics or remote model calls. Twenty original test rows are included by index, not selected for success.
 
+## New in v0.2: inspect every restart
+
+The new `docs/stability.html` page runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
+
+- **180 distinct pairs + 40 self-pairs**. Manual shortest-augmenting-path Hungarian matching returns a permutation and dual potentials. Each binary64 squared-distance cost becomes its exact power-of-two ratio. Python unbounded integers and browser BigInt verify dual feasibility, tight matched edges and equal primal/dual objectives. These are exact certificates for the **saved rounded matrices**, not real-number arithmetic or global k-means optimality.
+- All 220 assignments agree with an independent subset-DP optimum; randomized tiny signed/huge-integer costs also agree with exhaustive permutations. Counterexamples show why raw cluster IDs and rowwise nearest-center matching are misleading.
+- No refitting, changed models or new holdout-based selection. The original minimum-fitting-inertia winners and all previous holdout scores stay unchanged. Same-data initialization sensitivity is not sampling stability, uncertainty, useful-class discovery, or a way to select k. Center movement is geometry-specific and matching weights centers equally, not by population.
+
+```bash
+python -m clusterlab stability --out /tmp/restart-witnesses.json
+python examples/export_stability.py
+```
+
+38 Python tests and 10 Node/real-Chrome tests cover the combined project. The restart inspector checks all 800 model/example pairs against native references, all 400 directed pair controls, 1,280 displayed centroid pixels, arbitrary edited inputs and copy/download at mobile and desktop widths. [STABILITY.md](STABILITY.md) gives the algorithm, precision boundary, measured ranges and sources.
+
 ## What's built
 
 - D² k-means++ and uniform distinct-value initializers, explicit lowest-index assignment ties, Lloyd mean updates, empty-center repairs and full monotone objective histories.
@@ -54,7 +69,7 @@ python -m clusterlab predict examples/predict.json
 
 `train` writes the fixed protocol before loading training features and never loads test rows. `evaluate` first checks the frozen protocol/model hashes in the saved evaluation plan, then opens the original test file. Changing these artifacts invalidates the plan. The hash guard detects mutation, not deliberate test-driven tuning by a person. There is no validation search: all dimensions, k, starts and geometries are fixed in advance.
 
-The installed wheel includes data, artifacts and all eight modules. Its package CI runs all four CLIs outside the checkout, including a complete refit/evaluation. Rooted source examples export `docs/data.js` and the deterministic SVG; those publishing helpers are not installed console commands.
+The installed wheel includes data, artifacts and all nine modules. Its package CI runs all five CLIs outside the checkout, including a complete refit/evaluation. Rooted source examples export `docs/data.js` and the deterministic SVG; those publishing helpers are not installed console commands.
 
 ## Descent is not global optimality
 
