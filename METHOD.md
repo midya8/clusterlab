@@ -62,3 +62,8 @@ All six inspected November 8, 2026. Established methods, original implementation
 4. scikit-learn **Adjustment for chance in clustering performance evaluation** example. Unadjusted NMI's fragmentation bias: https://scikit-learn.org/stable/auto_examples/cluster/plot_adjusted_for_chance_measures.html
 5. NumPy **numpy.linalg.svd** documentation. Reduced SVD conventions: https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html
 6. Alpaydin & Kaynak (1998), **Optical Recognition of Handwritten Digits**, UCI, CC BY 4.0, DOI 10.24432/C50P49. Official original split, block-count preprocessing, writer-group description and attribution: https://archive.ics.uci.edu/dataset/80/optical+recognition+of+handwritten+digits
+
+
+## v0.2 restart stability
+
+The existing 40 fits and all held-out numbers above are unchanged. [STABILITY.md](STABILITY.md) documents the new label-free same-data partition agreement and exact rounded-cost center matching audit. The separate browser page exposes every saved restart. Combined tests: 38 Python, 10 Node/Chrome; installed wheel: nine modules, five CLIs.
