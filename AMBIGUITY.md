@@ -16,7 +16,7 @@ Let L=min C and H=max C. For one excluded edge, replace its cost with
 
 `M = n*H - (n-1)*L + 1`.
 
-All arithmetic is integer, including signed and huge costs. Any permutation avoiding that edge costs at most n*H. Any permutation using M costs at least M+(n-1)*L = n*H+1. For a complete square matrix with n>=2, an edge-avoiding permutation exists. Therefore the unconstrained optimum for this modified matrix cannot use the excluded edge. All remaining costs are original, so its objective is the exact constrained optimum. We export a primal permutation, feasible dual potentials, tight-edge equalities and equal primal/dual objectives for **each modified matrix**. Those duals need not be feasible for the original matrix; the witness names the penalty and forbidden edge explicitly.
+All arithmetic is integer, including signed and huge costs. Any permutation avoiding that edge costs at most `n*H`. Any permutation using M costs at least `M+(n-1)*L = n*H+1`. For a complete square matrix with n>=2, an edge-avoiding permutation exists. Therefore the unconstrained optimum for this modified matrix cannot use the excluded edge. All remaining costs are original, so its objective is the exact constrained optimum. We export a primal permutation, feasible dual potentials, tight-edge equalities and equal primal/dual objectives for **each modified matrix**. Those duals need not be feasible for the original matrix; the witness names the penalty and forbidden edge explicitly.
 
 There are 220 original matching problems, each with 10 exclusion problems, giving **2,200 exact constrained certificates**. Browser views reverse the matching by transposing costs, inverting permutations and swapping row/column duals, including each exclusion. Each original selected edge is covered exactly once. The browser validates the penalty formula and the forbidden-edge condition as well as every primal/dual certificate.
 
@@ -30,7 +30,7 @@ An unused tight edge alone is insufficient. In `[[0,0],[1,0]]`, edge (0,1) is ti
 
 ## A conservative entrywise-cost bound
 
-Let Delta be the best-distinct minus optimal total cost, in original distance-cost units. If every matrix entry changes by **strictly less** than rho=Delta/(2n), each permutation's total changes by less than n*rho, so the difference between the selected permutation and any competitor changes by less than 2n*rho=Delta. A unique selected optimum remains unique under that condition.
+Let Delta be the best-distinct minus optimal total cost, in original distance-cost units. If every matrix entry changes by **strictly less** than rho=Delta/(2n), each permutation's total changes by less than `n*rho`, so the difference between the selected permutation and any competitor changes by less than `2n*rho=Delta`. A unique selected optimum remains unique under that condition.
 
 The exported bound is exact rational in the scaled integer cost units; dividing by the original power-of-two scale gives distance-cost units. Decimal rendering is approximate. This is a **sufficient bound**, not a sharp radius or the largest admissible perturbation. It ignores that two permutations might share many edges. For example, an isolated two-row alternative in a 3-by-3 matrix can make the 2n bound conservative. At a zero gap there is no positive strict-uniqueness bound. At the boundary, the strict guarantee does not apply. This is not a bound on input pixels, centroid positions, floating-point error, sampling variation, ARI, or real-data semantic stability.
 
