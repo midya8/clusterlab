@@ -14,8 +14,8 @@ https://creativecommons.org/licenses/by/4.0/legalcode
 
 The source files are shared under that license, not the project's MIT code
 license. Original file and archive SHA-256 values are in `manifest.json`.
-Rendered grayscale digits, erased inputs and reconstructed images in the audit are
-adaptations of this dataset. Credit remains with the dataset's authors. UCI and
+Rendered grayscale digits, edited browser inputs and learned inverse-mapped
+centroid images in the audit are adaptations of this dataset. Credit remains with the dataset's authors. UCI and
 the authors do not endorse this project, its models or its conclusions.
 
 The data contain 64 numeric image-block counts and one numeric class label per
