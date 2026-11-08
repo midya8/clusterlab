@@ -4,7 +4,7 @@
  function inverse(a){const b=Array(a.length);a.forEach((j,i)=>b[j]=i);return b;}
  function oriented(a,reversed){if(!reversed)return a;return {...a,exclusions:a.exclusions.map(e=>({...e,forbidden_row:e.forbidden_column,forbidden_column:e.forbidden_row,assignment:inverse(e.assignment),row_dual:e.column_dual,column_dual:e.row_dual}))};}
  function verify(w,a){
-  core().verify(w);const n=w.assignment.length,c=w.cost_units.map(r=>r.map(BigInt));
+  const n=w.assignment.length;if(n<1||n>16)throw Error('exact counting requires size 1..16');core().verify(w);const c=w.cost_units.map(r=>r.map(BigInt));
   if(!Array.isArray(a.exclusions)||a.exclusions.length!==(n===1?0:n))throw Error('exclusion coverage');
   // Recount all-tight perfect matchings. A lone unused zero-cost edge need not
   // belong to an alternate perfect matching.
