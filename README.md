@@ -20,7 +20,7 @@ Try the [live clustering inspector](https://midya8.github.io/clusterlab/), or op
 
 ## New in v0.2: inspect every restart
 
-The new `docs/stability.html` page runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
+The [live restart inspector](https://midya8.github.io/clusterlab/stability.html) runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
 
 - **180 distinct pairs + 40 self-pairs**. Manual shortest-augmenting-path Hungarian matching returns a permutation and dual potentials. Each binary64 squared-distance cost becomes its exact power-of-two ratio. Python unbounded integers and browser BigInt verify dual feasibility, tight matched edges and equal primal/dual objectives. These are exact certificates for the **saved rounded matrices**, not real-number arithmetic or global k-means optimality.
 - All 220 assignments agree with an independent subset-DP optimum; randomized tiny signed/huge-integer costs also agree with exhaustive permutations. Counterexamples show why raw cluster IDs and rowwise nearest-center matching are misleading.
