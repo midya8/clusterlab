@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "clusterlab"
+version = "0.1.0"
+description = "Manual NumPy k-means with restart witnesses and label-free geometry controls"
+requires-python = ">=3.10"
+dependencies = ["numpy==2.2.6"]
+[project.scripts]
+clusterlab = "clusterlab.__main__:main"
+[tool.setuptools.package-data]
+clusterlab = ["data/*", "artifacts/*"]
+[tool.setuptools.packages.find]
+include = ["clusterlab*"]
+namespaces = false
