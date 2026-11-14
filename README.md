@@ -1,8 +1,6 @@
 # ClusterLab
 
-**Shapes first. Labels later.**
-
-Forty real-data k-means fits, explicit optimization witnesses, and an editable browser inspector. Manual NumPy algorithms, original licensed UCI data, independent numerical references. No scikit-learn, model APIs or training labels.
+ClusterLab fits k-means to the UCI handwritten-digit data with manual NumPy code. It keeps all 40 restarts, their objective histories and the checks behind each selected run. Two browser inspectors let you edit pixels, compare restarts and inspect centroid-matching certificates. Labels are used only after fitting for the external audit, never to fit a model or choose a restart. There is no scikit-learn dependency or remote model API.
 
 ![Ten learned means, external clustering scores and a local-minimum counterexample](assets/cluster-audit.svg)
 
@@ -18,7 +16,17 @@ bash examples/demo.sh
 
 Try the [live clustering inspector](https://midya8.github.io/clusterlab/), or open `docs/index.html` locally. It recomputes all ten distances for editable 8x8 digits, with keyboard controls, four fixed model arms, a centroid atlas, test-label composition, every restart's descent curve and copy/download JSON witnesses. No server, uploads, analytics or remote model calls. Twenty original test rows are included by index, not selected for success.
 
-## New in v0.3: optimal does not mean unique
+## Which inspector to use
+
+- **Original inspector:** edit digit pixels, inspect distances and compare the four fixed representation/initializer arms.
+- **Restart inspector:** compare all 40 frozen models and their fitting partitions, with exact centroid-assignment witnesses for the saved rounded costs.
+- **Matching ambiguity:** inspect optimal-permutation counts, best-distinct alternatives and a sufficient cost-perturbation bound.
+
+Centroid-assignment optimality is not global k-means optimality. Same-data seed
+sensitivity is not sampling stability, and a matching gap is not uncertainty
+about a digit label or robustness to pixel edits.
+
+## Centroid-matching ambiguity (0.3)
 
 Every original centroid-matching witness now has ten exact selected-edge exclusion certificates. Their minimum is the cheapest **different permutation**, which may tie the optimum. An exact tight-graph DP counts optimal permutations; an independent full-cost DP checks all 220 counts and best-distinct gaps. All 2,200 exclusion witnesses have attaining permutations and exact dual bounds for rigorously penalized matrices. The browser validates 4,000 oriented exclusions across its 400 pair views.
 
@@ -29,7 +37,7 @@ python -m clusterlab ambiguity --out /tmp/matching-ambiguity.json
 python examples/export_ambiguity.py
 ```
 
-## All forty restarts
+## Forty frozen restarts
 
 The [live restart inspector](https://midya8.github.io/clusterlab/stability.html) runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
 
@@ -44,7 +52,7 @@ python examples/export_stability.py
 
 48 Python tests and 13 Node/real-Chrome tests cover the combined project. The restart inspector checks all 800 model/example pairs against native references, all 400 directed pair controls, 1,280 displayed centroid pixels, arbitrary edited inputs and copy/download at mobile and desktop widths. [STABILITY.md](STABILITY.md) gives the algorithm, precision boundary, measured ranges and sources.
 
-## What's built
+## Fitting and checks
 
 - D² k-means++ and uniform distinct-value initializers, explicit lowest-index assignment ties, Lloyd mean updates, empty-center repairs and full monotone objective histories.
 - Ten seeds per arm; the selected run minimizes **fitting inertia**, not a label score. All 40 starts, center arrays, fitting assignments and initial row indices remain in the model artifact.
@@ -53,7 +61,7 @@ python examples/export_stability.py
 - A full refit test forbids test-loader access and supplies unusable training labels. Frozen file hashes are checked before held-out data load. All-row test evaluation is reproduced independently of saved scores.
 - Python/JavaScript inference parity on all 80 public model/example pairs. Real Chrome exercises edits, keyboard, all 640 displayed centroid pixels, copy denial/success, download and expanded 320/390/1280 layouts.
 
-## Measured official holdout
+## Results on the official test split
 
 Original UCI 3,823 training / 1,797 test rows stay separate. Training uses **only training features**; digit labels enter after fitting for the external audit. Each arm chooses its lowest fitting inertia from seeds 100-109. All 40 runs reached stable assignments within the 200-update budget.
 
