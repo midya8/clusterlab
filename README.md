@@ -90,6 +90,23 @@ python -m clusterlab predict examples/predict.json
 
 The installed wheel includes data, artifacts and all ten modules. Its package CI runs all six CLIs outside the checkout, including a complete refit/evaluation. Rooted source examples export `docs/data.js` and the deterministic SVG; those publishing helpers are not installed console commands.
 
+For the full installed replay, run `python examples/check_installed.py` after
+installing NumPy 2.2.6, setuptools and wheel. It builds a wheel in a new
+environment and runs all 48 existing Python tests outside the checkout.
+Ten installed module origins are checked before and after. Copied tests,
+exporters, browser bundles and figures contain no library Python source.
+The existing exact oracles, full 40-fit reproduction, all-row holdout checks
+and figure reproduction remain in that suite.
+
+The command replay covers all six commands in nine invocations through both
+`python -m clusterlab` and the installed `clusterlab` command. Eight complete
+output files match, including all 40 fresh fits, their frozen evaluation plan,
+the full holdout report and both saved/fresh restart and ambiguity audits.
+These are source/wheel comparisons in the same runtime, not independent
+numerical or statistical evidence. Use `--section tests` or `--section commands`
+to run either half separately. CI runs both halves in a separate job while
+keeping the original wheel smoke job and its tolerance-based comparisons.
+
 ## Descent is not global optimality
 
 On the tiny one-dimensional fixture `[0, 1, 4, 5, 9, 10]`, k=2 and initial centers `[0, 1]`, Lloyd converges monotonically to inertia **26.5**. Exhausting all 31 nonempty binary partitions with exact fractions gives **17.5**. The tests check both. We do not have a global-optimality certificate for the real-data fits. More restarts do not turn these finite observations into one.
