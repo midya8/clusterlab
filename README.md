@@ -1,6 +1,6 @@
-# ClusterLab
+# Kmeans clustering
 
-ClusterLab fits k-means to the UCI handwritten-digit data with manual NumPy code. It keeps all 40 restarts, their objective histories and the checks behind each selected run. Two browser inspectors let you edit pixels, compare restarts and inspect centroid-matching certificates. Labels are used only after fitting for the external audit, never to fit a model or choose a restart. There is no scikit-learn dependency or remote model API.
+Kmeans clustering fits k-means to the UCI handwritten-digit data with manual NumPy code. It keeps all 40 restarts, their objective histories and the checks behind each selected run. Two browser inspectors let you edit pixels, compare restarts and inspect centroid-matching certificates. Labels are used only after fitting for the external audit, never to fit a model or choose a restart. There is no scikit-learn dependency or remote model API.
 
 ![Ten learned means, external clustering scores and a local-minimum counterexample](assets/cluster-audit.svg)
 
@@ -14,7 +14,7 @@ node --test tests/*.cjs   # Node 22+ and Chrome; CHROME_BIN overrides the execut
 bash examples/demo.sh
 ```
 
-Try the [live clustering inspector](https://midya8.github.io/clusterlab/), or open `docs/index.html` locally. It recomputes all ten distances for editable 8x8 digits, with keyboard controls, four fixed model arms, a centroid atlas, test-label composition, every restart's descent curve and copy/download JSON witnesses. No server, uploads, analytics or remote model calls. Twenty original test rows are included by index, not selected for success.
+Try the [live clustering inspector](https://midya8.github.io/kmeans-clustering/), or open `docs/index.html` locally. It recomputes all ten distances for editable 8x8 digits, with keyboard controls, four fixed model arms, a centroid atlas, test-label composition, every restart's descent curve and copy/download JSON witnesses. No server, uploads, analytics or remote model calls. Twenty original test rows are included by index, not selected for success.
 
 ## Which inspector to use
 
@@ -39,7 +39,7 @@ python examples/export_ambiguity.py
 
 ## Forty frozen restarts
 
-The [live restart inspector](https://midya8.github.io/clusterlab/stability.html) runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
+The [live restart inspector](https://midya8.github.io/kmeans-clustering/stability.html) runs actual inference for **all 40 saved models**, not only the selected four. Compare any two seeds in one representation: all ten aligned centroid pairs, the complete 10x10 fitting-partition ARI matrix, arbitrary pixel edits and exact downloadable witnesses.
 
 - **180 distinct pairs + 40 self-pairs**. Manual shortest-augmenting-path Hungarian matching returns a permutation and dual potentials. Each binary64 squared-distance cost becomes its exact power-of-two ratio. Python unbounded integers and browser BigInt verify dual feasibility, tight matched edges and equal primal/dual objectives. These are exact certificates for the **saved rounded matrices**, not real-number arithmetic or global k-means optimality.
 - All 220 assignments agree with an independent subset-DP optimum; randomized tiny signed/huge-integer costs also agree with exhaustive permutations. Counterexamples show why raw cluster IDs and rowwise nearest-center matching are misleading.
